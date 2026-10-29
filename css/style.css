@@ -1,0 +1,539 @@
+/* =========================================================
+   PORTFÓLIO - ALICE CAROLINA
+   Estilo inspirado na imagem de referência:
+   fundo creme, rosa, títulos em itálico e flores de lótus.
+   ========================================================= */
+
+/* ---------- 1. CORES (variáveis) ----------
+   Se quiser trocar uma cor, é só mudar aqui e muda no site todo. */
+:root {
+  --fundo: #faf6ef;          /* creme */
+  --fundo-claro: #f6efe6;    /* creme um pouco mais escuro (seções alternadas) */
+  --cartao: #fffdf9;         /* fundo dos cartões */
+  --texto: #3b2a30;          /* texto principal */
+  --texto-suave: #6a5159;    /* texto secundário */
+  --rosa: #b04a64;           /* rosa forte (títulos, botões, bordas) */
+  --rosa-claro: #f7cdd7;     /* rosa claro (molduras, colchetes) */
+  --texto-botao: #ffffff;    /* texto dentro dos botões */
+}
+
+/* Modo escuro: o JavaScript coloca data-tema="escuro" no <html> */
+html[data-tema="escuro"] {
+  --fundo: #241a1f;
+  --fundo-claro: #2c2025;
+  --cartao: #33252c;
+  --texto: #f6ebee;
+  --texto-suave: #d9c3ca;
+  --rosa: #f2a0b5;
+  --rosa-claro: #6b3a49;
+  --texto-botao: #241a1f;
+}
+
+/* ---------- 2. CONFIGURAÇÕES GERAIS ---------- */
+* {
+  box-sizing: border-box; /* padding e borda não aumentam o tamanho do elemento */
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth; /* rolagem suave ao clicar nos links do menu */
+  scroll-padding-top: 80px; /* evita que o cabeçalho tampe o título da seção */
+}
+
+body {
+  font-family: "Montserrat", Arial, sans-serif;
+  background-color: var(--fundo);
+  color: var(--texto);
+  line-height: 1.7;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+a {
+  color: var(--rosa);
+}
+
+/* Foco visível para quem navega com o teclado (Tab) */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible {
+  outline: 3px solid var(--rosa);
+  outline-offset: 3px;
+}
+
+/* Container: centraliza o conteúdo e limita a largura */
+.container {
+  width: min(1100px, 100% - 2rem);
+  margin-inline: auto;
+}
+
+/* Lista sem bolinhas */
+.lista-limpa {
+  list-style: none;
+}
+
+/* Link "pular para o conteúdo": fica escondido até receber foco */
+.pular-link {
+  position: absolute;
+  left: 1rem;
+  top: -4rem;
+  background: var(--rosa);
+  color: var(--texto-botao);
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  z-index: 200;
+}
+.pular-link:focus {
+  top: 1rem;
+}
+
+/* ---------- 3. CABEÇALHO ---------- */
+.cabecalho {
+  position: sticky; /* fica fixo no topo ao rolar a página */
+  top: 0;
+  z-index: 100;
+  background-color: var(--fundo);
+  border-bottom: 2px solid var(--rosa-claro);
+}
+
+/* Flexbox: logo à esquerda, menu à direita */
+.cabecalho-conteudo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 70px;
+  gap: 1rem;
+}
+
+.logo {
+  font-family: "Playfair Display", Georgia, serif;
+  font-style: italic;
+  font-weight: 600;
+  font-size: 1.6rem;
+  text-decoration: none;
+}
+
+.menu {
+  display: flex;
+  gap: 1.5rem;
+  list-style: none;
+}
+
+.menu a {
+  color: var(--texto);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.95rem;
+  padding: 0.3rem 0;
+  border-bottom: 2px solid transparent;
+}
+
+.menu a:hover {
+  color: var(--rosa);
+  border-bottom-color: var(--rosa);
+}
+
+/* Botões redondos (tema e hambúrguer) */
+.cabecalho-botoes {
+  display: flex;
+  gap: 0.5rem;
+  order: 3; /* no computador, os botões ficam depois do menu */
+}
+
+.botao-icone {
+  width: 44px;
+  height: 44px;
+  border: 2px solid var(--rosa);
+  border-radius: 50%;
+  background: transparent;
+  color: var(--rosa);
+  font-size: 1.2rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.botao-icone:hover {
+  background-color: var(--rosa-claro);
+}
+
+/* O hambúrguer só aparece no celular/tablet */
+.botao-menu {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.linha {
+  display: block;
+  width: 20px;
+  height: 2px;
+  background-color: var(--rosa);
+  transition: transform 0.3s, opacity 0.3s;
+}
+
+/* Quando o menu está aberto, as linhas viram um "X" */
+.botao-menu.aberto .linha:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+.botao-menu.aberto .linha:nth-child(2) {
+  opacity: 0;
+}
+.botao-menu.aberto .linha:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+/* ---------- 4. SEÇÕES (parte comum) ---------- */
+.secao {
+  position: relative;
+  overflow: hidden; /* os enfeites não saem da seção */
+  padding: 5rem 0;
+}
+
+.secao-clara {
+  background-color: var(--fundo-claro);
+}
+
+/* Título das seções com colchetes, como na imagem de referência */
+.titulo-secao {
+  font-family: "Playfair Display", Georgia, serif;
+  font-style: italic;
+  font-weight: 600;
+  font-size: clamp(2.2rem, 6vw, 3.6rem);
+  color: var(--rosa);
+  text-align: center;
+  line-height: 1.2;
+  margin-bottom: 3rem;
+}
+
+.colchete {
+  color: var(--rosa-claro);
+  font-style: normal;
+  font-weight: 400;
+  font-size: 1.2em;
+}
+
+/* Imagens só de enfeite */
+.enfeite {
+  position: absolute;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Todo o conteúdo fica na frente dos enfeites */
+.secao .container {
+  position: relative;
+  z-index: 1;
+}
+
+/* ---------- 5. INÍCIO ---------- */
+.inicio {
+  padding: 4rem 0 5rem;
+}
+
+/* Flexbox: texto de um lado, foto do outro */
+.inicio-conteudo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 3rem;
+}
+
+.inicio-texto {
+  flex: 1;
+}
+
+h1 {
+  line-height: 1.1;
+  margin-bottom: 1.5rem;
+}
+
+/* "Bom dia!" grande e em itálico, como o "Hello!" da referência */
+.saudacao {
+  display: block;
+  font-family: "Playfair Display", Georgia, serif;
+  font-style: italic;
+  font-weight: 600;
+  font-size: clamp(3.5rem, 10vw, 6.5rem);
+  color: var(--rosa);
+}
+
+.nome-grande {
+  display: block;
+  font-size: clamp(1.2rem, 3vw, 1.7rem);
+  font-weight: 600;
+  margin-top: 0.5rem;
+}
+
+.inicio-descricao {
+  max-width: 480px;
+  color: var(--texto-suave);
+  margin-bottom: 2rem;
+}
+
+.botoes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+/* Moldura oval da foto */
+.foto-moldura {
+  flex-shrink: 0;
+  width: min(300px, 70vw);
+  aspect-ratio: 3 / 4;
+  border: 6px solid var(--rosa-claro);
+  border-radius: 50%;
+  padding: 6px;
+  background-color: var(--cartao);
+}
+
+.foto-moldura img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;          /* a foto preenche a moldura sem esticar */
+  object-position: center 25%; /* mantém o rosto aparecendo */
+  border-radius: 50%;
+}
+
+/* Posição dos enfeites do início */
+.espiral-1 {
+  width: 220px;
+  top: -30px;
+  right: 25%;
+  opacity: 0.7;
+}
+.lotus-fundo {
+  width: 380px;
+  bottom: -40px;
+  left: -90px;
+  opacity: 0.35;
+}
+
+/* ---------- 6. BOTÕES ---------- */
+.botao {
+  display: inline-block;
+  padding: 0.8rem 1.8rem;
+  border: 2px solid var(--rosa);
+  border-radius: 999px;
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.botao-cheio {
+  background-color: var(--rosa);
+  color: var(--texto-botao);
+}
+.botao-cheio:hover {
+  background-color: transparent;
+  color: var(--rosa);
+}
+
+.botao-contorno {
+  background-color: transparent;
+  color: var(--rosa);
+}
+.botao-contorno:hover {
+  background-color: var(--rosa);
+  color: var(--texto-botao);
+}
+
+/* ---------- 7. SOBRE MIM ---------- */
+.sobre-conteudo {
+  max-width: 700px;
+  margin-inline: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  font-size: 1.05rem;
+}
+
+/* ---------- 8. HABILIDADES E PROJETOS (Grid) ---------- */
+/* Grid: colunas se ajustam sozinhas conforme a largura da tela */
+.grade {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.5rem;
+}
+
+/* Cartão com borda arredondada rosa, como na referência */
+.cartao {
+  background-color: var(--cartao);
+  border: 2px solid var(--rosa);
+  border-radius: 24px;
+  padding: 1.8rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.8rem;
+}
+
+.cartao h3 {
+  font-family: "Playfair Display", Georgia, serif;
+  font-style: italic;
+  font-size: 1.7rem;
+  color: var(--rosa);
+  line-height: 1.2;
+}
+
+.cartao p {
+  color: var(--texto-suave);
+  flex: 1; /* empurra o botão/selo para o final do cartão */
+}
+
+/* Selo "Já uso" / "Aprendendo" */
+.selo {
+  background-color: var(--rosa-claro);
+  color: var(--texto);
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 0.2rem 0.9rem;
+  border-radius: 999px;
+}
+.selo-aprendendo {
+  background-color: transparent;
+  border: 2px dashed var(--rosa);
+}
+
+.link-projeto {
+  font-weight: 600;
+}
+
+.lotus-canto {
+  width: 260px;
+  right: -40px;
+  bottom: -30px;
+  opacity: 0.5;
+}
+.espiral-2 {
+  width: 200px;
+  left: -60px;
+  top: 40px;
+  opacity: 0.6;
+}
+
+/* ---------- 9. CONTATO ---------- */
+.contato-conteudo {
+  max-width: 800px;
+  margin-inline: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.contato-texto {
+  text-align: center;
+  font-size: 1.05rem;
+}
+
+/* Os cartões de contato reutilizam o estilo .grade e .cartao */
+.contato-cartoes .link-projeto {
+  word-break: break-word; /* o e-mail comprido não estoura o cartão no celular */
+}
+
+/* ---------- 10. RODAPÉ ---------- */
+.rodape {
+  background-color: var(--fundo);
+  border-top: 2px solid var(--rosa-claro);
+  padding: 1.5rem 0;
+  font-size: 0.95rem;
+}
+
+.rodape-conteudo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.rodape-contatos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.5rem;
+}
+
+.voltar-topo {
+  font-weight: 600;
+}
+
+/* ---------- 11. RESPONSIVIDADE ---------- */
+
+/* Tablet e celular: aparece o hambúrguer e o menu vira uma lista vertical */
+@media (max-width: 800px) {
+  .botao-menu {
+    display: flex;
+  }
+
+  /* Logo na esquerda e botões na direita */
+  .cabecalho-conteudo {
+    gap: 0;
+  }
+
+  .cabecalho-botoes {
+    order: 0;
+    margin-left: auto;
+  }
+
+  /* Menu escondido por padrão no celular */
+  .menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    gap: 0;
+    background-color: var(--fundo);
+    border-bottom: 2px solid var(--rosa-claro);
+    padding: 0.5rem 1rem 1rem;
+  }
+
+  /* O JavaScript adiciona a classe "aberto" para mostrar o menu */
+  .menu.aberto {
+    display: flex;
+  }
+
+  .menu a {
+    display: block;
+    padding: 0.8rem 0;
+    border-bottom: 1px solid var(--rosa-claro);
+  }
+
+  /* Início: foto vai para cima e tudo fica centralizado */
+  .inicio-conteudo {
+    flex-direction: column-reverse;
+    text-align: center;
+  }
+  .inicio-descricao {
+    margin-inline: auto;
+  }
+  .botoes {
+    justify-content: center;
+  }
+
+  .secao {
+    padding: 3.5rem 0;
+  }
+}
+
+/* Respeita quem prefere menos movimento na tela */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  * {
+    transition: none !important;
+  }
+}
